@@ -22,7 +22,7 @@
     dest: "{{ compose_dir }}/docker-compose.yml"
 
 - name: Launch Odoo stack via docker-compose
-  community.docker.docker_compose:
+  docker_compose:
     project_src: "{{ compose_dir }}"
     pull: yes
     state: present
