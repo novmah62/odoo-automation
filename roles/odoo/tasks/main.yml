@@ -1,0 +1,28 @@
+---
+- name: Clone Odoo Docker Compose repository
+  git:
+    repo: "{{ compose_repo }}"
+    dest: "{{ compose_dir }}"
+    version: master
+
+- name: Copy custom addons to host
+  copy:
+    src: "../custom-addons/"
+    dest: "{{ custom_addons_path }}"
+    mode: '0755'
+
+- name: Create .env file
+  template:
+    src: .env.j2
+    dest: "{{ env_file }}"
+
+- name: Render docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ compose_dir }}/docker-compose.yml"
+
+- name: Launch Odoo stack via docker-compose
+  community.docker.docker_compose:
+    project_src: "{{ compose_dir }}"
+    pull: yes
+    state: present

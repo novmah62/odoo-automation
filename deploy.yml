@@ -1,0 +1,5 @@
+- hosts: odoo
+  roles:
+    - docker
+    - postgres
+    - odoo

@@ -1,0 +1,6 @@
+---
+odoo_image: "odoo:{{ odoo_version }}"
+compose_dir: "{{ compose_dir }}"
+env_file: "{{ compose_dir }}/.env"
+community_addons_path: "{{ compose_dir }}/addons"
+custom_addons_path: "{{ custom_addons_path }}"

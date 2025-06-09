@@ -1,0 +1,9 @@
+---
+- name: Pull PostgreSQL image
+  community.docker.docker_image:
+    name: "{{ postgres_image }}"
+    source: pull
+
+- name: Create postgres data volume
+  community.docker.docker_volume:
+    name: odoo-db-data

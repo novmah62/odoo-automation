@@ -1,0 +1,3 @@
+---
+compose_dir: /opt/odoo
+compose_repo: https://github.com/vdx-vn/odoo-docker-compose.git

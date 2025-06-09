@@ -1,0 +1,4 @@
+---
+package_state: latest
+docker_users:
+  - "{{ ansible_user }}"
