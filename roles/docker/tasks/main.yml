@@ -1,9 +1,5 @@
 ---
-- name: Ensure apt cache is updated
-  apt:
-    update_cache: yes
-
-- name: Install Docker prerequisites
+- name: Ensure apt cache is updated and prerequisites installed for Docker
   apt:
     name:
       - apt-transport-https
@@ -12,35 +8,41 @@
       - gnupg-agent
       - software-properties-common
     state: present
+    update_cache: yes # Cập nhật cache ngay tại đây để bao gồm cả các gói prerequisites
 
 - name: Add Docker GPG key
-  apt_key:
+  ansible.builtin.apt_key: # Sử dụng FQCN để tránh mơ hồ nếu có nhiều module cùng tên
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
+    # Không cần check status vì apt_key sẽ tự động xử lý idempotency (chỉ thêm nếu chưa có)
 
 - name: Add Docker repository
-  apt_repository:
+  ansible.builtin.apt_repository: # Sử dụng FQCN
     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
     state: present
-    update_cache: yes
+    update_cache: yes # Cập nhật cache sau khi thêm repo để apt nhận diện các gói Docker
 
 - name: Install Docker packages
-  apt:
+  ansible.builtin.apt: # Sử dụng FQCN
     name:
-      - docker.io
+      - docker-ce # Khuyến nghị sử dụng docker-ce thay vì docker.io cho phiên bản cộng đồng
+      - docker-ce-cli
       - containerd.io
-    state: "{{ package_state }}"
-    update_cache: yes
+      - docker-buildx-plugin # Các plugin phổ biến có thể cần
+      - docker-compose-plugin
+    state: "{{ package_state | default('present') }}" # Đảm bảo có giá trị mặc định
+    update_cache: yes # Cập nhật cache lần nữa để đảm bảo các gói mới nhất
 
 - name: Add users to docker group
-  user:
+  ansible.builtin.user: # Sử dụng FQCN
     name: "{{ item }}"
     groups: docker
-    append: yes
-  loop: "{{ docker_users }}"
+    append: yes # Đảm bảo không xóa các nhóm hiện có
+  loop: "{{ docker_users | default([]) }}" # Đảm bảo vòng lặp có giá trị mặc định để tránh lỗi nếu biến không được định nghĩa
 
-- name: Ensure Docker service is running
-  systemd:
+- name: Ensure Docker service is running and enabled
+  ansible.builtin.systemd: # Sử dụng FQCN
     name: docker
-    enabled: yes
-    state: started
+    enabled: yes # Đảm bảo dịch vụ khởi động cùng hệ thống
+    state: started # Đảm bảo dịch vụ đang chạy
+    daemon_reload: yes # Tải lại cấu hình systemd nếu có thay đổi (ví dụ: sau khi cài đặt dịch vụ mới)
