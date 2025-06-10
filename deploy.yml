@@ -1,4 +1,7 @@
 - hosts: odoo
+  become: true
+  vars_files:
+    - "{{ playbook_dir }}/vault.yml"
   roles:
     - docker
     - postgres
