@@ -21,8 +21,7 @@
     src: docker-compose.yml.j2
     dest: "{{ compose_dir }}/docker-compose.yml"
 
-- name: Launch Odoo stack via docker-compose
-  docker_compose:
-    project_src: "{{ compose_dir }}"
-    pull: yes
-    state: present
+- name: Launch Odoo stack via Docker Compose CLI
+  command: docker-compose up -d
+  args:
+    chdir: "{{ compose_dir }}"
