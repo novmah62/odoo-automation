@@ -4,6 +4,9 @@
     repo: "{{ compose_repo }}"
     dest: "{{ compose_dir }}"
     version: "17"
+    update: true
+    force: true     
+    clean: true
 
 - name: Copy custom addons to host
   copy:
