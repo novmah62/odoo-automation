@@ -21,6 +21,14 @@
     src: docker-compose.yml.j2
     dest: "{{ compose_dir }}/docker-compose.yml"
 
+- name: Pull Docker Compose images via CLI
+  command: docker-compose pull
+  args:
+    chdir: "{{ compose_dir }}"
+  register: compose_pull
+  failed_when: compose_pull.rc != 0 and compose_pull.rc != 1
+  # rc=1 sometimes khi image up-to-date; adjust nếu cần
+
 - name: Launch Odoo stack via Docker Compose CLI
   command: docker-compose up -d
   args:

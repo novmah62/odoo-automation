@@ -1,9 +1,16 @@
 ---
-- name: Pull PostgreSQL image
-  community.docker.docker_image:
-    name: "{{ postgres_image }}"
-    source: pull
+- name: Pull PostgreSQL image via CLI
+  command: docker pull "{{ postgres_image }}"
+  register: pull_postgres
+  changed_when: "'Downloaded newer image' in pull_postgres.stdout or 'Pull complete' in pull_postgres.stdout"
+  failed_when: pull_postgres.rc != 0 and 'Image is up to date' not in pull_postgres.stdout
 
-- name: Create postgres data volume
-  community.docker.docker_volume:
-    name: odoo-db-data
+- name: Ensure postgres data volume exists
+  command: docker volume inspect odoo-db-data
+  register: vol_check
+  failed_when: false
+  changed_when: false
+
+- name: Create postgres data volume if missing
+  command: docker volume create odoo-db-data
+  when: vol_check.rc != 0
