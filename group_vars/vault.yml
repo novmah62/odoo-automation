@@ -1,3 +1,0 @@
----
-vault_postgres_password: "your_secure_password_here"
-vault_admin_password: "your_secure_admin_password_here"
