@@ -39,11 +39,10 @@
 
 - name: Add users to docker group
   user:
-    name: "{{ item }}"
+    name: "{{ ansible_user }}"
     groups: docker
     append: yes
-  loop: "{{ docker_users | default([ansible_user]) }}"
-
+    
 - name: Ensure Docker service is running
   systemd:
     name: docker

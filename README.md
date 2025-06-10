@@ -46,15 +46,6 @@ sudo apt install -y ansible
 ansible --version
 ```
 
-#### Trên macOS:
-```bash
-# Sử dụng Homebrew
-brew install ansible
-
-# Kiểm tra cài đặt
-ansible --version
-```
-
 ### 2. Cấu hình SSH
 
 ```bash
@@ -105,7 +96,12 @@ ansible_become=true
 ansible all -m ping
 
 # Chạy playbook
-ansible-playbook deploy.yml
+ansible-playbook deploy.yml --ask-pass --ask-become-pass --ask-vault-pass -vvv
+## --ask-pass            Yêu cầu nhập mật khẩu SSH (nếu không dùng SSH key)
+##  --ask-become-pass    Yêu cầu nhập mật khẩu sudo (nếu cần quyền root)
+##  --ask-vault-pass     Yêu cầu nhập mật khẩu để giải mã file vault.yml
+##  -vvv                 Hiển thị log chi tiết (debug)
+
 ```
 
 ## Cấu trúc dự án
@@ -115,8 +111,7 @@ odoo-automation/
 ├── deploy.yml           # Playbook chính
 ├── custom-addons/       # Addons tùy chỉnh
 ├── group_vars/          # Biến cho các nhóm
-│   ├── all.yml         # Biến chung
-│   ├── odoo.yml        # Biến cấu hình Odoo
+│   ├── all.yml         # Biến cấu hình chung
 │   └── vault.yml       # Biến bảo mật (mật khẩu)
 ├── inventory/           # File inventory
 │   └── production.ini  # Cấu hình server

@@ -22,3 +22,11 @@ odoo_image: odoo:{{ odoo_version }}
 
 # Admin password for Odoo
 admin_password: "{{ vault_admin_password }}"
+
+# User configuration
+remote_user: drewsec
+
+# SSH configuration
+ansible_ssh_private_key_file: ~/.ssh/id_rsa
+ansible_become: true
+ansible_user: "{{ remote_user }}"
