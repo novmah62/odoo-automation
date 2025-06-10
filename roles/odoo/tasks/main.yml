@@ -13,10 +13,23 @@
     dest: "{{ custom_addons_path }}"
     mode: '0755'
 
+- name: Create config directory
+  file:
+    path: "{{ compose_dir }}/config"
+    state: directory
+    mode: '0755'
+
+- name: Copy Odoo configuration
+  template:
+    src: odoo.conf.j2
+    dest: "{{ compose_dir }}/config/odoo.conf"
+    mode: '0644'
+
 - name: Create .env file
   template:
     src: .env.j2
-    dest: "{{ env_file }}"
+    dest: "{{ compose_dir }}/.env"
+    mode: '0644'
 
 - name: Render docker-compose.yml
   template:

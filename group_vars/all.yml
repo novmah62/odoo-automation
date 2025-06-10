@@ -1,3 +1,24 @@
 ---
+# Paths
 compose_dir: /opt/odoo
 compose_repo: https://github.com/vdx-vn/odoo-docker-compose.git
+custom_addons_path: "{{ compose_dir }}/custom-addons"
+community_addons_path: "{{ compose_dir }}/community-addons"
+postgres_data_dir: /var/lib/postgresql/data
+
+# Odoo version and ports
+odoo_version: "18.0"
+odoo_http_port: 8069
+db_port: 5432
+
+# Database configuration
+db_user: odoo
+db_password: "{{ vault_postgres_password }}"
+db_name: odoo
+
+# Docker images
+postgres_image: postgres:15
+odoo_image: odoo:{{ odoo_version }}
+
+# Admin password for Odoo
+admin_password: "{{ vault_admin_password }}"
