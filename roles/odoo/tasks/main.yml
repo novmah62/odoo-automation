@@ -3,7 +3,7 @@
   git:
     repo: "{{ compose_repo }}"
     dest: "{{ compose_dir }}"
-    version: master
+    version: 17
 
 - name: Copy custom addons to host
   copy:
