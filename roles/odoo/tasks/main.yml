@@ -7,7 +7,7 @@
 
 - name: Copy custom addons to host
   copy:
-    src: "../custom-addons/"
+    src: "{{ playbook_dir }}/custom-addons/"
     dest: "{{ custom_addons_path }}"
     mode: '0755'
 
