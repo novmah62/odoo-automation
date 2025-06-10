@@ -13,7 +13,7 @@ db_port: 5432
 
 # Database configuration
 db_user: odoo
-db_password: "{{ vault_postgres_password }}"
+postgres_password: "{{ vault_postgres_password }}"
 db_name: odoo
 
 # Docker images
