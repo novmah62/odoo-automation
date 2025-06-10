@@ -42,9 +42,11 @@
     name: "{{ ansible_user }}"
     groups: docker
     append: yes
-    
+  become: true
+
 - name: Ensure Docker service is running
   systemd:
     name: docker
     enabled: yes
     state: started
+  become: true
