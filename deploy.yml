@@ -1,7 +1,7 @@
 - hosts: odoo
   become: true
-  vars_files:
-    - group_vars/vault.yml
+  # vars_files:
+  #   - group_vars/vault.yml
   roles:
     - docker
     - postgres
